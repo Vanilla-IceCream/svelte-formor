@@ -1,0 +1,50 @@
+{
+  "name": "svelte-formor",
+  "version": "0.1.0",
+  "description": "Form validation for Svelte in composition functions with Zod.",
+  "main": "./dist/svelte-formor.umd.cjs",
+  "module": "./dist/svelte-formor.js",
+  "types": "./dist/svelte-formor.d.ts",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/svelte-formor.js",
+      "require": "./dist/svelte-formor.umd.cjs"
+    }
+  },
+  "scripts": {
+    "build": "vite build",
+    "test": "vitest --run --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vanilla-IceCream/svelte-formor.git"
+  },
+  "keywords": [
+    "svelte",
+    "composition",
+    "form",
+    "validation",
+    "zod",
+    "schema"
+  ],
+  "author": "Vanilla IceCream",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Vanilla-IceCream/svelte-formor/issues"
+  },
+  "homepage": "https://github.com/Vanilla-IceCream/svelte-formor#readme",
+  "devDependencies": {
+    "@vitest/coverage-c8": "^0.31.0",
+    "happy-dom": "^9.10.9",
+    "svelte": "^3.59.1",
+    "typescript": "^5.0.4",
+    "vite": "^4.3.5",
+    "vite-plugin-dts": "^2.3.0",
+    "vitest": "^0.31.0",
+    "zod": "^3.21.4"
+  }
+}
