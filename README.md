@@ -1,6 +1,6 @@
 # svelte-formor
 
-Form validation for Svelte in composition functions with Zod.
+Form validation for Svelte in Runes with Valibot.
 
 ## Installation
 
