@@ -1,4 +1,5 @@
 <script>
+  // import { useSchema } from '$lib/svelte-formor.svelte';
   import { useSchema } from 'svelte-formor';
   import * as v from 'valibot';
 
@@ -14,14 +15,12 @@
 
   const msgs = { required: 'This is a required field' };
 
-  let s = $derived(
-    v.object({
-      name: v.nullish(v.string([v.minLength(1, msgs.required)]), ''),
-      email: v.nullish(v.string([v.minLength(1, msgs.required)]), ''),
-    }),
-  );
+  let struct = v.object({
+    name: v.nullish(v.string([v.minLength(1, msgs.required)]), ''),
+    email: v.nullish(v.string([v.minLength(1, msgs.required)]), ''),
+  });
 
-  const schema = useSchema(s, form, valdn);
+  const schema = useSchema(struct, form, valdn);
 
   const submit = () => {
     if (schema.validate()) {

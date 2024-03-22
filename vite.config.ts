@@ -15,7 +15,14 @@ export default defineConfig({
     //   external: [...Object.keys(pkg.dependencies)],
     // },
   },
-  plugins: [svelte(), dts()],
+  plugins: [
+    svelte({
+      compilerOptions: {
+        runes: true,
+      },
+    }),
+    dts(),
+  ],
   test: {
     globals: true,
     environment: 'happy-dom',

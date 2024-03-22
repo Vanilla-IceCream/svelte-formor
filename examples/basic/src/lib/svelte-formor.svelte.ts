@@ -46,13 +46,13 @@ export const useSchema = (schema: BaseSchema, target: object, errors: object, to
     parse();
   });
 
-  // $effect(() => {
-  //   for (const key in target) {
-  //     if (Object.prototype.hasOwnProperty.call(target, key)) {
-  //       if (validated) debouncing();
-  //     }
-  //   }
-  // });
+  $effect(() => {
+    for (const key in target) {
+      if (Object.prototype.hasOwnProperty.call(target, key)) {
+        if (validated) debouncing();
+      }
+    }
+  });
 
   const validate = () => {
     validated = true;
