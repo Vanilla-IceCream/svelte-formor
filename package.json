@@ -2,22 +2,16 @@
   "name": "svelte-formor",
   "version": "0.1.0",
   "description": "Form validation for Svelte in Runes with Valibot.",
-  "main": "./dist/svelte-formor.cjs",
-  "module": "./dist/svelte-formor.js",
-  "types": "./dist/src/svelte-formor.svelte.d.ts",
   "type": "module",
+  "sideEffects": false,
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
       "import": {
-        "types": "./dist/src/svelte-formor.svelte.d.ts",
-        "default": "./dist/svelte-formor.js"
-      },
-      "require": {
-        "types": "./dist/src/svelte-formor.svelte.d.ts",
-        "default": "./dist/svelte-formor.cjs"
+        "types": "./src/svelte-formor.svelte.ts",
+        "default": "./src/svelte-formor.svelte.ts"
       }
     }
   },
