@@ -1,6 +1,4 @@
-import type {} from 'svelte';
 import type { BaseSchema } from 'valibot';
-import { unmount } from 'svelte';
 import { safeParse } from 'valibot';
 
 import { debounce } from './utils';
@@ -46,6 +44,21 @@ export const useSchema = (schema: BaseSchema, target: object, errors: object, to
     parse();
   });
 
+  // $effect.root(() => {
+  //   $effect(() => {
+  //     for (const key in target) {
+  //       if (Object.prototype.hasOwnProperty.call(target, key)) {
+  //         if (validated) debouncing();
+  //       }
+  //     }
+  //   });
+
+	// 	return () => {
+	// 		console.log('stop');
+  //     stop()
+	// 	};
+	// });
+
   $effect(() => {
     for (const key in target) {
       if (Object.prototype.hasOwnProperty.call(target, key)) {
@@ -54,50 +67,21 @@ export const useSchema = (schema: BaseSchema, target: object, errors: object, to
     }
   });
 
-  const validate = () => {
+  function validate() {
     validated = true;
     return parse();
-  };
+  }
 
-  const stop = () => {
+  function stop() {
     validated = false;
 
     for (const key in errors) {
       errors[key] = undefined;
     }
-  };
-
-  const run = () => {
-    // $effect(() => {
-    //   if (touched?.value) {
-    //     if (!validated) parse(true);
-    //   }
-    // });
-    // const debouncing = debounce(() => {
-    //   parse(true);
-    // });
-    // $effect(() => {
-    //   if (target.value) {
-    //     if (!validated) debouncing();
-    //   }
-    // });
-  };
-
-  const rerun = () => {
-    // if (touched?.value) {
-    //   touched.value = {};
-    // }
-  };
-
-  unmount(() => {
-    stop();
-    rerun();
-  });
+  }
 
   return {
     validate,
     stop,
-    run,
-    rerun,
   };
 };

@@ -1,28 +1,21 @@
-import { resolve } from 'path';
+import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
-import { svelte } from '@sveltejs/vite-plugin-svelte';
-import dts from 'vite-plugin-dts';
 
-// import pkg from './package.json';
+import dts from 'vite-plugin-dts';
 
 export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/svelte-formor.svelte.ts'),
-      formats: ['es', 'cjs'],
+      formats: ['es'],
+      fileName: 'svelte-formor.svelte',
     },
-    // rollupOptions: {
-    //   external: [...Object.keys(pkg.dependencies)],
-    // },
+    rollupOptions: {
+      external: ['valibot'],
+    },
+    minify: false,
   },
-  plugins: [
-    svelte({
-      compilerOptions: {
-        runes: true,
-      },
-    }),
-    dts(),
-  ],
+  plugins: [dts()],
   test: {
     globals: true,
     environment: 'happy-dom',

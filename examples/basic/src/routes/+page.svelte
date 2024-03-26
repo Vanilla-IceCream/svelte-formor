@@ -1,24 +1,23 @@
-<script>
-  // import { useSchema } from '$lib/svelte-formor.svelte';
+<script lang="ts">
   import { useSchema } from 'svelte-formor';
   import * as v from 'valibot';
 
-  // interface Form {
-  //   name?: string;
-  //   email?: string;
-  // }
+  interface Form {
+    name?: string;
+    email?: string;
+  }
 
-  // let form = $state<Form>({});
-  // let valdn = $state<Partial<Record<keyof Form, string>>>({});
-  let form = $state({});
-  let valdn = $state({});
+  let form = $state<Form>({});
+  let valdn = $state<Partial<Record<keyof Form, string>>>({});
 
   const msgs = { required: 'This is a required field' };
 
-  let struct = v.object({
-    name: v.nullish(v.string([v.minLength(1, msgs.required)]), ''),
-    email: v.nullish(v.string([v.minLength(1, msgs.required)]), ''),
-  });
+  let struct = $derived.by(() =>
+    v.object({
+      name: v.nullish(v.string([v.minLength(1, msgs.required)]), ''),
+      email: v.nullish(v.string([v.minLength(1, msgs.required)]), ''),
+    }),
+  );
 
   const schema = useSchema(struct, form, valdn);
 

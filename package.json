@@ -3,21 +3,20 @@
   "version": "0.1.0",
   "description": "Form validation for Svelte in Runes with Valibot.",
   "type": "module",
-  "sideEffects": false,
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
       "import": {
-        "types": "./src/svelte-formor.svelte.ts",
-        "default": "./src/svelte-formor.svelte.ts"
+        "types": "./dist/src/svelte-formor.svelte.d.ts",
+        "default": "./dist/svelte-formor.svelte.js"
       }
     }
   },
   "scripts": {
     "build": "vite build",
-    "test": "vitest --run --coverage"
+    "test": "vitest run --coverage"
   },
   "repository": {
     "type": "git",
@@ -25,7 +24,7 @@
   },
   "keywords": [
     "svelte",
-    "composition",
+    "runes",
     "form",
     "validation",
     "valibot",
