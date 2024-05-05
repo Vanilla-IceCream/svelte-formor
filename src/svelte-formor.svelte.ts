@@ -3,7 +3,12 @@ import { safeParse } from 'valibot';
 
 import { debounce } from './utils';
 
-export const useSchema = (schema: BaseSchema, target: object, errors: object, touched?: object) => {
+export const useSchema = (
+  schema: BaseSchema,
+  target: object,
+  errors: Record<string, string | undefined>,
+  touched?: Record<string, boolean | undefined>,
+) => {
   let validated = false;
 
   function parse(useTouch = false) {
@@ -53,11 +58,11 @@ export const useSchema = (schema: BaseSchema, target: object, errors: object, to
   //     }
   //   });
 
-	// 	return () => {
-	// 		console.log('stop');
+  // 	return () => {
+  // 		console.log('stop');
   //     stop()
-	// 	};
-	// });
+  // 	};
+  // });
 
   $effect(() => {
     for (const key in target) {
