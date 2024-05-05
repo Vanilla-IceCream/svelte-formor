@@ -10,14 +10,12 @@
   let form = $state<Form>({});
   let valdn = $state<Partial<Record<keyof Form, string>>>({});
 
-  const msgs = { required: 'This is a required field' };
+  let msgs = $state({ required: 'This is a required field' });
 
-  let struct = $derived.by(() =>
-    v.object({
-      name: v.nullish(v.string([v.minLength(1, msgs.required)]), ''),
-      email: v.nullish(v.string([v.minLength(1, msgs.required)]), ''),
-    }),
-  );
+  let struct = v.object({
+    name: v.nullish(v.string([v.minLength(1, msgs.required)]), ''),
+    email: v.nullish(v.string([v.minLength(1, msgs.required)]), ''),
+  });
 
   const schema = useSchema(struct, form, valdn);
 
@@ -25,6 +23,10 @@
     if (schema.validate()) {
       console.log('passed =', form);
     }
+  };
+
+  const i18n = () => {
+    msgs.required = '這是必填欄位';
   };
 </script>
 
@@ -39,3 +41,6 @@
 
 <pre>{JSON.stringify(form, null, 2)}</pre>
 <pre>{JSON.stringify(valdn, null, 2)}</pre>
+<pre>{JSON.stringify(msgs, null, 2)}</pre>
+
+<button type="button" class="mt-6" onclick={i18n}>i18n</button>
