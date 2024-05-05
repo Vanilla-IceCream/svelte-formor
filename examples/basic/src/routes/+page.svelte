@@ -10,14 +10,16 @@
   let form = $state<Form>({});
   let valdn = $state<Partial<Record<keyof Form, string>>>({});
 
-  let msgs = $state({ required: 'This is a required field' });
+  let msgs = $state({ required: 'This is a required field', email: `This must be a valid email` });
 
-  let struct = v.object({
-    name: v.nullish(v.string([v.minLength(1, msgs.required)]), ''),
-    email: v.nullish(v.string([v.minLength(1, msgs.required)]), ''),
-  });
+  let struct = $derived(
+    v.object({
+      name: v.nullish(v.string([v.minLength(1, msgs.required)]), ''),
+      email: v.nullish(v.string([v.minLength(1, msgs.required), v.email(msgs.email)]), ''),
+    }),
+  );
 
-  const schema = useSchema(struct, form, valdn);
+  const schema = $derived(useSchema(struct, form, valdn));
 
   const submit = () => {
     if (schema.validate()) {
@@ -25,8 +27,14 @@
     }
   };
 
-  const i18n = () => {
-    msgs.required = '這是必填欄位';
+  const i18n = (lang: 'en' | 'zh') => {
+    if (lang === 'zh') {
+      msgs.required = `這是必填欄位`;
+      msgs.email = `這必須是一個有效的電子郵件`;
+    } else {
+      msgs.required = 'This is a required field';
+      msgs.email = `This must be a valid email`;
+    }
   };
 </script>
 
@@ -43,4 +51,5 @@
 <pre>{JSON.stringify(valdn, null, 2)}</pre>
 <pre>{JSON.stringify(msgs, null, 2)}</pre>
 
-<button type="button" class="mt-6" onclick={i18n}>i18n</button>
+<button type="button" class="mt-6" onclick={() => i18n('en')}>en</button>
+<button type="button" class="mt-6" onclick={() => i18n('zh')}>zh</button>

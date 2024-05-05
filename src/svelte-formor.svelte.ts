@@ -33,10 +33,12 @@ export const useSchema = (
         }
 
         if (errorPath) {
-          if (useTouch) {
-            errors[errorPath] = issue.message;
-          } else {
-            errors[errorPath] = issue.message;
+          if (!errors[errorPath]) {
+            if (useTouch) {
+              if (touched?.[errorPath]) errors[errorPath] = issue.message;
+            } else {
+              errors[errorPath] = issue.message;
+            }
           }
         }
       }
@@ -49,27 +51,18 @@ export const useSchema = (
     parse();
   });
 
-  // $effect.root(() => {
-  //   $effect(() => {
-  //     for (const key in target) {
-  //       if (Object.prototype.hasOwnProperty.call(target, key)) {
-  //         if (validated) debouncing();
-  //       }
-  //     }
-  //   });
-
-  // 	return () => {
-  // 		console.log('stop');
-  //     stop()
-  // 	};
-  // });
-
-  $effect(() => {
-    for (const key in target) {
-      if (Object.prototype.hasOwnProperty.call(target, key)) {
-        if (validated) debouncing();
+  $effect.root(() => {
+    $effect(() => {
+      for (const key in target) {
+        if (Object.prototype.hasOwnProperty.call(target, key)) {
+          if (validated) debouncing();
+        }
       }
-    }
+    });
+
+    return () => {
+      stop();
+    };
   });
 
   function validate() {
