@@ -53,15 +53,18 @@ export const useSchema = (
 
   $effect.root(() => {
     $effect(() => {
-      for (const key in target) {
-        if (Object.prototype.hasOwnProperty.call(target, key)) {
-          if (validated) debouncing();
+      if (validated) {
+        for (const key in target) {
+          if (Object.prototype.hasOwnProperty.call(target, key)) {
+            debouncing();
+          }
         }
       }
     });
 
     return () => {
       stop();
+      rerun();
     };
   });
 
@@ -78,8 +81,24 @@ export const useSchema = (
     }
   }
 
+  function run() {
+    if (touched && typeof touched === 'object') {
+      parse(true);
+    }
+  }
+
+  function rerun() {
+    if (touched && typeof touched === 'object') {
+      for (const key in touched) {
+        touched[key] = undefined;
+      }
+    }
+  }
+
   return {
     validate,
     stop,
+    run,
+    rerun,
   };
 };

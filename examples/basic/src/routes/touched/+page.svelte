@@ -9,6 +9,7 @@
 
   let form = $state<Form>({});
   let valdn = $state<Partial<Record<keyof Form, string>>>({});
+  let touched = $state<Partial<Record<keyof Form, boolean>>>({});
 
   let locale = $state({
     required: 'This is a required field',
@@ -23,6 +24,7 @@
       }),
       form,
       valdn,
+      touched,
     ),
   );
 
@@ -45,8 +47,8 @@
 
 <form>
   <div>
-    <input type="text" bind:value={form.name} />
-    <input type="text" bind:value={form.email} />
+    <input type="text" bind:value={form.name} onblur={() => (touched.name = true)} />
+    <input type="text" bind:value={form.email} onblur={() => (touched.email = true)} />
   </div>
 
   <button type="button" onclick={submit}>Submit</button>
@@ -54,6 +56,7 @@
 
 <pre>form = {JSON.stringify(form, null, 2)}</pre>
 <pre>valdn = {JSON.stringify(valdn, null, 2)}</pre>
+<pre>touched = {JSON.stringify(touched, null, 2)}</pre>
 <pre>locale = {JSON.stringify(locale, null, 2)}</pre>
 
 <button type="button" onclick={() => i18n('en')}>English</button>
