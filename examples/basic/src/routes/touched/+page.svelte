@@ -19,8 +19,11 @@
   const schema = $derived(
     useSchema(
       v.object({
-        name: v.nullish(v.string([v.minLength(1, locale.required)]), ''),
-        email: v.nullish(v.string([v.minLength(1, locale.required), v.email(locale.email)]), ''),
+        name: v.nullish(v.pipe(v.string(), v.minLength(1, locale.required)), ''),
+        email: v.nullish(
+          v.pipe(v.string(), v.minLength(1, locale.required), v.email(locale.email)),
+          '',
+        ),
       }),
       form,
       valdn,

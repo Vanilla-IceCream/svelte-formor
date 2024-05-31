@@ -1,18 +1,18 @@
-import type { BaseSchema } from 'valibot';
+import type { BaseSchema, BaseIssue, ObjectPathItem, ArrayPathItem } from 'valibot';
 import { safeParse } from 'valibot';
 
 import { debounce } from './utils';
 
-export const useSchema = (
-  schema: BaseSchema,
-  target: object,
+export const useSchema = <const TSchema extends BaseSchema<unknown, unknown, BaseIssue<unknown>>>(
+  schema: TSchema,
+  target: unknown,
   errors: Record<string, string | undefined>,
   touched?: Record<string, boolean | undefined>,
 ) => {
   let validated = false;
 
   function parse(useTouch = false) {
-    const parsed = safeParse(schema, target);
+    const parsed = safeParse<TSchema>(schema, target);
 
     for (const key in errors) {
       errors[key] = undefined;
@@ -22,13 +22,14 @@ export const useSchema = (
       for (let i = 0; i < parsed.issues.length; i++) {
         const issue = parsed.issues[i];
 
-        let errorPath = issue.path?.length ? String(issue.path?.[0].key) : '';
+        let errorPath = issue.path?.length ? String((issue.path?.[0] as ObjectPathItem).key) : '';
 
         if (issue.path?.some((item) => item.type === 'array')) {
           errorPath = issue.path?.reduce((acc, cur) => {
-            if (typeof cur.key === 'number') return acc + `[${cur.key}]`;
-            if (acc) return acc + `.${cur.key}`;
-            return String(cur.key);
+            const path = cur as ArrayPathItem;
+            if (typeof path.key === 'number') return acc + `[${path.key}]`;
+            if (acc) return acc + `.${path.key}`;
+            return String(path.key);
           }, '');
         }
 
