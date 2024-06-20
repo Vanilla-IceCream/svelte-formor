@@ -47,12 +47,23 @@
 </script>
 
 <form>
-  <div>
-    <input type="text" bind:value={form.name} />
-    <input type="text" bind:value={form.email} />
-  </div>
+  <fieldset>
+    <legend>General</legend>
 
-  <button type="button" onclick={submit}>Submit</button>
+    <div class="flex gap-2">
+      <label for="name">Name</label>
+      <input type="text" id="name" bind:value={form.name} />
+      <div class="text-red-500">{valdn.name}</div>
+    </div>
+
+    <div class="flex gap-2">
+      <label for="email">Email</label>
+      <input type="text" id="email" bind:value={form.email} />
+      <div class="text-red-500">{valdn.email}</div>
+    </div>
+
+    <button type="button" onclick={submit}>Submit</button>
+  </fieldset>
 </form>
 
 <pre>form = {JSON.stringify(form, null, 2)}</pre>
@@ -61,3 +72,17 @@
 
 <button type="button" onclick={() => i18n('en')}>English</button>
 <button type="button" onclick={() => i18n('zh')}>Chinese</button>
+
+<style>
+  .flex {
+    display: flex;
+  }
+
+  .gap-2 {
+    gap: 0.5rem;
+  }
+
+  .text-red-500 {
+    color: #ef4444;
+  }
+</style>
