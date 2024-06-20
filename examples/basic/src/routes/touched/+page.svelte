@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { useSchema } from 'svelte-formor';
   import * as v from 'valibot';
 
@@ -46,6 +47,10 @@
       locale.email = `This must be a valid email`;
     }
   };
+
+  onMount(() => {
+    schema.run();
+  });
 </script>
 
 <form>

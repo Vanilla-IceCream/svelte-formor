@@ -52,12 +52,26 @@ export const useSchema = <const TSchema extends BaseSchema<unknown, unknown, Bas
     parse();
   });
 
+  const debouncing2 = debounce(() => {
+    parse(true);
+  });
+
   $effect.root(() => {
     $effect(() => {
       if (validated) {
         for (const key in target) {
           if (Object.prototype.hasOwnProperty.call(target, key)) {
             debouncing();
+          }
+        }
+      }
+
+      if (touched && typeof touched === 'object') {
+        if (!validated) {
+          for (const key in touched) {
+            if (Object.prototype.hasOwnProperty.call(touched, key)) {
+              debouncing2();
+            }
           }
         }
       }
