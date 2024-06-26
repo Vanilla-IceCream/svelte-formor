@@ -1,6 +1,6 @@
 {
   "name": "svelte-formor",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Form validation for Svelte in Runes with Valibot.",
   "type": "module",
   "files": [
@@ -38,12 +38,12 @@
   "homepage": "https://github.com/Vanilla-IceCream/svelte-formor#readme",
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "3.1.1",
-    "@types/node": "20.14.6",
+    "@types/node": "20.14.9",
     "@vitest/coverage-v8": "1.6.0",
-    "happy-dom": "14.12.0",
-    "svelte": "5.0.0-next.160",
-    "typescript": "5.4.5",
-    "valibot": "0.33.3",
+    "happy-dom": "14.12.3",
+    "svelte": "5.0.0-next.166",
+    "typescript": "5.5.2",
+    "valibot": "0.35.0",
     "vite": "5.3.1",
     "vite-plugin-dts": "3.9.1",
     "vitest": "1.6.0"

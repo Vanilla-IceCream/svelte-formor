@@ -5,9 +5,9 @@ import { debounce } from './utils';
 
 export const useSchema = <const TSchema extends BaseSchema<unknown, unknown, BaseIssue<unknown>>>(
   schema: TSchema,
-  target: unknown,
-  errors: Record<string, string | undefined>,
-  touched?: Record<string, boolean | undefined>,
+  target: object,
+  errors: Partial<Record<PropertyKey, string>>,
+  touched?: Partial<Record<PropertyKey, boolean>>,
 ) => {
   let validated = false;
 
@@ -66,8 +66,14 @@ export const useSchema = <const TSchema extends BaseSchema<unknown, unknown, Bas
         }
       }
 
-      if (touched && typeof touched === 'object') {
+      if (touched) {
         if (!validated) {
+          for (const key in target) {
+            if (Object.prototype.hasOwnProperty.call(target, key)) {
+              debouncing2();
+            }
+          }
+
           for (const key in touched) {
             if (Object.prototype.hasOwnProperty.call(touched, key)) {
               debouncing2();
@@ -97,13 +103,13 @@ export const useSchema = <const TSchema extends BaseSchema<unknown, unknown, Bas
   }
 
   function run() {
-    if (touched && typeof touched === 'object') {
+    if (touched) {
       parse(true);
     }
   }
 
   function rerun() {
-    if (touched && typeof touched === 'object') {
+    if (touched) {
       for (const key in touched) {
         touched[key] = undefined;
       }

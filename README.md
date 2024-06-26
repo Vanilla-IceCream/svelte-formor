@@ -21,49 +21,77 @@ $ bun add svelte-formor
 To use `svelte-formor`, import the `useSchema` function:
 
 ```ts
-// esm
 import { useSchema } from 'svelte-formor';
-
-// cjs
-const { useSchema } = require('svelte-formor');
 ```
+
+Basic forms:
 
 ```svelte
 <script lang="ts">
-  import { writable } from 'svelte/store';
   import { useSchema } from 'svelte-formor';
-  import { z } from 'zod';
+  import * as v from 'valibot';
 
-  const form = writable<{ name?: string; email?: string }>({});
-  const valdn = writable<Record<string, string>>({});
+  interface Form {
+    name?: string;
+    email?: string;
+  }
 
-  const msgs = { required: 'This is a required field' };
+  let form = $state<Form>({});
+  let valdn = $state<Partial<Record<keyof Form, string>>>({});
 
-  const schema = useSchema(
-    z.object({
-      name: z.string({ required_error: msgs.required }).nonempty(msgs.required),
-      email: z.string({ required_error: msgs.required }).nonempty(msgs.required),
-    }),
-    form,
-    valdn,
+  let locale = $state({
+    required: 'This is a required field',
+    email: `This must be a valid email`,
+  });
+
+  const schema = $derived(
+    useSchema(
+      v.object({
+        name: v.nullish(v.pipe(v.string(), v.minLength(1, locale.required)), ''),
+        email: v.nullish(
+          v.pipe(v.string(), v.minLength(1, locale.required), v.email(locale.email)),
+          '',
+        ),
+      }),
+      form,
+      valdn,
+    ),
   );
 
   const submit = () => {
     if (schema.validate()) {
-      console.log('passed', $form);
+      console.log('passed =', form);
     }
   };
 </script>
 
-<div class="max-w-100 p-6 shadow-md">
-  <div class="flex flex-col gap-3">
-    <TextField label="Name" bind:value={$form.name} errorMessage={$valdn.name} />
-    <TextField label="Email" bind:value={$form.email} errorMessage={$valdn.email} />
+<form>
+  <div class="flex gap-2">
+    <label for="name">Name</label>
+    <input type="text" id="name" bind:value={form.name} />
+    <div class="text-red-500">{valdn.name}</div>
   </div>
 
-  <Button class="mt-6" on:click={submit}>Submit</Button>
-</div>
+  <div class="flex gap-2">
+    <label for="email">Email</label>
+    <input type="text" id="email" bind:value={form.email} />
+    <div class="text-red-500">{valdn.email}</div>
+  </div>
 
-<pre>{JSON.stringify($form, null, 2)}</pre>
-<pre>{JSON.stringify($valdn, null, 2)}</pre>
+  <button type="button" onclick={submit}>Submit</button>
+</form>
+
+<style>
+  .flex {
+    display: flex;
+  }
+
+  .gap-2 {
+    gap: 0.5rem;
+  }
+
+  .text-red-500 {
+    color: #ef4444;
+  }
+</style>
 ```
