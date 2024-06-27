@@ -95,3 +95,13 @@ Basic forms:
   }
 </style>
 ```
+
+> [!IMPORTANT]
+>
+> This library is built using Svelte Runes, so you need to add the following configuration in the Vite config file:
+>
+> ```ts
+>   ssr: {
+>     noExternal: ['svelte-formor'],
+>   },
+> ```
