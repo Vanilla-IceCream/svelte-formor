@@ -1,0 +1,70 @@
+<script lang="ts">
+  import { useSchema } from 'svelte-formor';
+  import * as v from 'valibot';
+
+  interface Form {
+    name?: string;
+    email?: string;
+  }
+
+  let form = $state<Form>({});
+  let valdn = $state<Partial<Record<keyof Form, string>>>({});
+
+  let locale = $state({
+    required: 'This is a required field',
+    email: `This must be a valid email`,
+  });
+
+  const schema = $derived(
+    useSchema(
+      v.object({
+        name: v.nullish(v.pipe(v.string(), v.minLength(1, locale.required)), ''),
+        email: v.nullish(
+          v.pipe(v.string(), v.minLength(1, locale.required), v.email(locale.email)),
+          '',
+        ),
+      }),
+      form,
+      valdn,
+    ),
+  );
+
+  const submit = () => {
+    if (schema.validate()) {
+      console.log('passed =', form);
+    }
+  };
+
+  const i18n = (lang: 'en' | 'zh') => {
+    if (lang === 'zh') {
+      locale.required = `這是必填欄位`;
+      locale.email = `這必須是一個有效的電子郵件`;
+    } else {
+      locale.required = 'This is a required field';
+      locale.email = `This must be a valid email`;
+    }
+  };
+</script>
+
+<form>
+  <fieldset>
+    <legend>General</legend>
+
+    <div class="flex gap-2">
+      <label for="name">Name</label>
+      <input type="text" id="name" bind:value={form.name} />
+      <div class="text-red-500">{valdn.name}</div>
+    </div>
+
+    <div class="flex gap-2">
+      <label for="email">Email</label>
+      <input type="text" id="email" bind:value={form.email} />
+      <div class="text-red-500">{valdn.email}</div>
+    </div>
+
+    <button type="button" onclick={submit}>Submit</button>
+  </fieldset>
+</form>
+
+<button type="button" onclick={() => i18n('en')}>English</button>
+<button type="button" onclick={() => i18n('zh')}>Chinese</button>
