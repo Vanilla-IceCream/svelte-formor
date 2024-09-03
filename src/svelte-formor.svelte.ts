@@ -60,24 +60,21 @@ export const useSchema = <const TSchema extends BaseSchema<unknown, unknown, Bas
     $effect(() => {
       if (validated) {
         for (const key in target) {
-          if (Object.prototype.hasOwnProperty.call(target, key)) {
-            debouncing();
-          }
+          target[key as keyof typeof target];
+          if (Object.prototype.hasOwnProperty.call(target, key)) debouncing();
         }
       }
 
       if (touched) {
         if (!validated) {
           for (const key in target) {
-            if (Object.prototype.hasOwnProperty.call(target, key)) {
-              debouncing2();
-            }
+            target[key as keyof typeof target];
+            if (Object.prototype.hasOwnProperty.call(target, key)) debouncing2();
           }
 
           for (const key in touched) {
-            if (Object.prototype.hasOwnProperty.call(touched, key)) {
-              debouncing2();
-            }
+            touched[key as keyof typeof touched];
+            if (Object.prototype.hasOwnProperty.call(touched, key)) debouncing2();
           }
         }
       }

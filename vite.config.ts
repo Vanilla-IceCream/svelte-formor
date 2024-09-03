@@ -16,7 +16,20 @@ export default defineConfig({
     },
     minify: false,
   },
-  plugins: [dts(), svelte(), svelteTesting()],
+  plugins: [
+    {
+      apply: 'build',
+      ...dts(),
+    },
+    {
+      apply: 'serve',
+      ...svelte(),
+    },
+    {
+      apply: 'serve',
+      ...svelteTesting(),
+    },
+  ],
   test: {
     globals: true,
     environment: 'happy-dom',

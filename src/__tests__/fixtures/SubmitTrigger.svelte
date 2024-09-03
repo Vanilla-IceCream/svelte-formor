@@ -48,7 +48,7 @@
 
 <form>
   <fieldset>
-    <legend>General</legend>
+    <legend>Submit Trigger Verification</legend>
 
     <div class="flex gap-2">
       <label for="name">Name</label>

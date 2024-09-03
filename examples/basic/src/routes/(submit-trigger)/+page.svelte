@@ -15,7 +15,7 @@
     email: `This must be a valid email`,
   });
 
-  const schema = $derived(
+  let schema = $derived(
     useSchema(
       v.object({
         name: v.nullish(v.pipe(v.string(), v.minLength(1, locale.required)), ''),
@@ -48,7 +48,7 @@
 
 <form>
   <fieldset>
-    <legend>General</legend>
+    <legend>Submit Trigger Verification</legend>
 
     <div class="flex gap-2">
       <label for="name">Name</label>

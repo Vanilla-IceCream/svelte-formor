@@ -17,7 +17,7 @@
     email: `This must be a valid email`,
   });
 
-  const schema = $derived(
+  let schema = $derived(
     useSchema(
       v.object({
         name: v.nullish(v.pipe(v.string(), v.minLength(1, locale.required)), ''),
@@ -40,11 +40,15 @@
 
   const i18n = (lang: 'en' | 'zh') => {
     if (lang === 'zh') {
-      locale.required = `這是必填欄位`;
-      locale.email = `這必須是一個有效的電子郵件`;
+      locale = {
+        required: `這是必填欄位`,
+        email: `這必須是一個有效的電子郵件`,
+      };
     } else {
-      locale.required = 'This is a required field';
-      locale.email = `This must be a valid email`;
+      locale = {
+        required: `This is a required field`,
+        email: `This must be a valid email`,
+      };
     }
   };
 
@@ -55,7 +59,7 @@
 
 <form>
   <fieldset>
-    <legend>Touched</legend>
+    <legend>Touch Trigger Verification</legend>
 
     <div class="flex gap-2">
       <label for="name">Name</label>
