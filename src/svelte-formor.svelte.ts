@@ -1,13 +1,13 @@
 import type { BaseSchema, BaseIssue, ObjectPathItem, ArrayPathItem } from 'valibot';
 import { safeParse } from 'valibot';
 
-import { debounce } from './utils';
+import { debounce } from './utils.ts';
 
 export const useSchema = <const TSchema extends BaseSchema<unknown, unknown, BaseIssue<unknown>>>(
   schema: TSchema,
   target: object,
   errors: Partial<Record<PropertyKey, string>>,
-  touched?: Partial<Record<PropertyKey, boolean>>,
+  touched?: Partial<Record<PropertyKey, boolean>>
 ) => {
   let validated = false;
 

@@ -7,19 +7,22 @@ import { svelteTesting } from '@testing-library/svelte/vite';
 export default defineConfig({
   build: {
     lib: {
-      entry: resolve(import.meta.dirname, 'src/svelte-formor.svelte.ts'),
+      entry: resolve(import.meta.dirname, './src/index.ts'),
       formats: ['es'],
-      fileName: 'svelte-formor.svelte',
+      fileName: '[name]',
     },
     rollupOptions: {
       external: ['valibot'],
+      output: {
+        preserveModules: true,
+      },
     },
     minify: false,
   },
   plugins: [
     {
       apply: 'build',
-      ...dts(),
+      ...dts({ exclude: ['vite.config.ts', '**/__tests__/**'] }),
     },
     {
       apply: 'serve',
